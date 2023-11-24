@@ -116,6 +116,92 @@ func (server * Server) getProduct(w http.ResponseWriter, r *http.Request){
 }
 
 
+func (server * Server) updateProductPrice(w http.ResponseWriter, r *http.Request){
+	var req  db.UpdateProductPriceParams
+
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil{
+		http.Error(w, fmt.Sprintf("An error occured %s" , err) , http.StatusBadRequest)
+		return 
+	}
+
+	arg := db.UpdateProductPriceParams{
+		Price: req.Price,
+		ID: req.ID,
+	}
+
+	result, err := server.db.UpdateProductPrice(context.Background() , arg);
+
+	if err!= nil{
+		http.Error(w, fmt.Sprintf(" An Error Occured %s" , err) , http.StatusInternalServerError)
+		return
+	}
+
+	updateProductId , _ := result.LastInsertId()
+	
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("Product with id %d was updated succesfully" , updateProductId )))
+
+
+}
+
+func (server * Server) updateProductRating(w http.ResponseWriter, r *http.Request){
+	
+	var arg  db.UpdateProductRatingParams
+
+	err := json.NewDecoder(r.Body).Decode(&arg)
+	if err != nil{
+		http.Error(w, fmt.Sprintf("An error occured %s" , err) , http.StatusBadRequest)
+		return 
+	}
+
+
+	result, err := server.db.UpdateProductRating(context.Background() , arg);
+
+	if err!= nil{
+		http.Error(w, fmt.Sprintf(" An Error Occured %s" , err) , http.StatusInternalServerError)
+		return
+	}
+
+	updatedProductId , _ := result.LastInsertId()
+	
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("Rating for Product with id %d was updated succesfully" , updatedProductId )))
+
+
+}
+
+
+func (server * Server) updateProductAvailability(w http.ResponseWriter, r *http.Request){
+	
+	var arg  db.UpdateProductAvailabilityParams
+
+	err := json.NewDecoder(r.Body).Decode(&arg)
+	if err != nil{
+		http.Error(w, fmt.Sprintf("An error occured %s" , err) , http.StatusBadRequest)
+		return 
+	}
+
+
+	result, err := server.db.UpdateProductAvailability(context.Background() , arg);
+
+	if err!= nil{
+		http.Error(w, fmt.Sprintf(" An Error Occured %s" , err) , http.StatusInternalServerError)
+		return
+	}
+
+	updatedProductId , _ := result.LastInsertId()
+	
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("Availability for Product with id %d was updated succesfully" , updatedProductId )))
+
+
+}
+
+
 func (server * Server) deleteProduct(w http.ResponseWriter, r *http.Request){
 	id := chi.URLParam(r, "id")
 	productID, err := strconv.Atoi(id)
@@ -125,20 +211,7 @@ func (server * Server) deleteProduct(w http.ResponseWriter, r *http.Request){
 			http.Error(w, " id parameter Must be a number (id of the product)" , http.StatusBadRequest)
 				
 	}
-	// db.
 	
-	// product , err := server.db.GetProduct(context.Background() ,int32(productID))
-	// if err != nil {
-
-	// 	if  err == sql.ErrNoRows{
-	// 		 emptyProducts:= make( []db.Product , 0) // Return [] instead of a struct with empty fields
-	// 		json.NewEncoder(w).Encode(emptyProducts)
-
-	// 		return
-	// 	}
-	// 	http.Error(w, fmt.Sprintf("An Error Occured %s" , err) , http.StatusInternalServerError)
-	// }
-
 	result , err := server.db.DeleteProduct(context.Background() , int64(productID))
 	if err != nil {
 		http.Error(w, "No Product with the given id was found" , http.StatusNotFound)

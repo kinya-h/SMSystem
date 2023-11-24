@@ -22,6 +22,9 @@ func NewServer(db  *db.Queries) *Server{
 
 	router.Post("/api/products" , server.addProduct)
 	router.Get("/api/products" , server.getProducts)
+	router.Patch("/api/products/{id}/price" , server.updateProductPrice)
+	router.Patch("/api/products/{id}/rating" , server.updateProductRating)
+	router.Patch("/api/products/{id}/available" , server.updateProductAvailability)
 	router.Delete("/api/products/{id}" , server.deleteProduct)
 	router.Get("/api/products/{id}" , server.getProduct)
 
