@@ -21,20 +21,26 @@ CREATE TABLE products (
             PRIMARY KEY (id) 
             );
 
-CREATE TABLE cart_items(
-    id INT AUTO_INCREMENT NOT NULL,
-    product_id FLOAT NOT NULL ,
-    quantity INT NOT NULL ,
-    PRIMARY KEY (id),
-    FOREIGN KEY(product_id) REFERENCES products(id)
 
-);
+
+
 
 CREATE TABLE carts (
-    id INT AUTO_INCREMENT NOT NULL,
-    items INT NOT NULL,
-    user_id INT NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(items) REFERENCES cart_items(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-)
+    id INT NOT NULL,
+    cart_id VARCHAR(36) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+    PRIMARY KEY (id)
+    
+);
+
+
+
+CREATE TABLE cart_items (
+    id INT NOT NULL,
+    cart_id VARCHAR(36) NOT NULL,
+    product_id  INT NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);

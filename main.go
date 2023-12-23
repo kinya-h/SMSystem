@@ -36,7 +36,7 @@ func main(){
 	
 	ctx := context.Background()
 	
-	dbConnection, err := sql.Open("mysql", "root:root@/macs")
+	dbConnection, err := sql.Open("mysql", "root:root@/macs?parseTime=true")
 	
 	if err != nil {
 		fmt.Println("AN ERROR OCCURED ", err)

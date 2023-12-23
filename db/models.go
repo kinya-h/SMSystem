@@ -7,15 +7,16 @@ package db
 import ()
 
 type Cart struct {
-	ID     interface{} `json:"id"`
-	Items  int64       `json:"items"`
-	UserID int64       `json:"user_id"`
+	ID        int64       `json:"id"`
+	CartID    string      `json:"cart_id"`
+	CreatedAt interface{} `json:"created_at"`
 }
 
 type CartItem struct {
-	ID        interface{} `json:"id"`
-	ProductID float64     `json:"product_id"`
-	Quantity  int64       `json:"quantity"`
+	ID        int64  `json:"id"`
+	CartID    string `json:"cart_id"`
+	ProductID int64  `json:"product_id"`
+	Quantity  int64  `json:"quantity"`
 }
 
 type Product struct {

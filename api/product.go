@@ -99,7 +99,6 @@ func (server * Server) getProduct(w http.ResponseWriter, r *http.Request){
 			http.Error(w, " id parameter Must be a number (id of the product)" , http.StatusBadRequest)
 				
 	}
-	// db.
 	
 	product , err := server.db.GetProduct(context.Background() ,int64(productID))
 	if err != nil {
