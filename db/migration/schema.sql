@@ -8,6 +8,17 @@ CREATE TABLE users(
     PRIMARY KEY(id)
 );
 
+
+
+CREATE TABLE  customers (
+    id INT NOT NULL,
+    name VARCHAR(255),
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+     PRIMARY KEY(id)
+);
+
+
 CREATE TABLE products (
             id INT  NOT NULL , 
             name VARCHAR(50) NOT NULL ,
@@ -44,3 +55,23 @@ CREATE TABLE cart_items (
     FOREIGN KEY (cart_id) REFERENCES carts(cart_id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+
+
+CREATE TABLE  `orders` (
+    id INT NOT NULL,
+    placed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+        payment_status ENUM('Pending', 'Complete', 'Failed') DEFAULT 'Pending',
+    customer_id INT NOT NULL REFERENCES customer(id) ON DELETE RESTRICT,
+     PRIMARY KEY(id)
+);
+
+
+
+CREATE TABLE  order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL REFERENCES orders(id) ON DELETE RESTRICT,
+    product_id INT NOT NULL REFERENCES product(id) ON DELETE RESTRICT,
+    quantity SMALLINT,
+    unit_price DECIMAL(6, 2)
+); 
